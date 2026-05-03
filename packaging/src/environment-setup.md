@@ -84,7 +84,7 @@ start-cli --version
 
 ## Coding with Claude (Recommended)
 
-AI coding tools like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) can dramatically accelerate your packaging workflow. To get the best results, set up a workspace that gives Claude direct access to the packaging guide.
+AI coding tools like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) can dramatically accelerate your packaging workflow. If you are using Claude, Start9 highly recommends using the Opus 4.7 or later model. To get the best results, set up a workspace that gives Claude direct access to the packaging guide.
 
 ### 1. Create a workspace directory
 
