@@ -4,6 +4,10 @@ Access a service interface directly using a gateway's public IP address and port
 
 For hosting websites or APIs that people access in a browser, use a [public domain](clearnet.md) instead. Public IPs accessed in a browser will display certificate warnings because Let's Encrypt does not sign certificates for IP addresses. Visitors would need to [trust your Root CA](trust-ca.md), which is not reasonable for public access.
 
+## Watch The Video 
+
+<div class="yt-video" data-id="xKYhCMNN3gw" data-title="Public IP"></div>
+
 ## Enable Public IP Access
 
 1. On the service interface's addresses page, locate the gateway you want to use.

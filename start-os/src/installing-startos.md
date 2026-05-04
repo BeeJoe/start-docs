@@ -2,6 +2,10 @@
 
 This guide is for flashing StartOS to a USB drive, then installing it onto a desktop, laptop, or mini PC. For an up-to-date list of known-good hardware, please check out this [forum post](https://community.start9.com/t/known-good-hardware-master-list-hardware-capable-of-running-startos/).
 
+## Watch The Video
+
+<div class="yt-video" data-id="5hGeaBzMfWQ" data-title="Installing StartOS"></div>
+
 ## Download
 
 1.  Visit the [Github release page](https://github.com/Start9Labs/start-os/releases/latest) to find the latest version of StartOS.

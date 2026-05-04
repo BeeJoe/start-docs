@@ -2,6 +2,10 @@
 
 A gateway is a network interface that connects your server to the Internet. Your router is the default gateway — it is always present. You can add additional gateways using WireGuard configuration files. All gateways are managed under `System > Gateways`.
 
+## WATCH THE VIDEO 
+
+<div class="yt-video" data-id="ZCc8sZdalNE" data-title="Gateways"></div>
+
 ## Gateway Types
 
 Every gateway routes outbound traffic from your server to the Internet. Some gateways also accept inbound connections. StartOS automatically detects the type:

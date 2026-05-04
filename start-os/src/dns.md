@@ -2,6 +2,10 @@
 
 This page covers how StartOS resolves domain names and when you might need to change the defaults.
 
+## WATCH THE VIDEO
+
+<div class="yt-video" data-id="_vnAqNTaBwM" data-title="DNS"></div>
+
 ## DHCP
 
 By default, StartOS obtains its DNS servers from your router via [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol). For most users, the default settings require no changes.
