@@ -1049,7 +1049,7 @@ Display initialization logs. Same log options as `server logs`.
 
 Display initialization kernel logs. Same log options as `server logs`.
 
-### `start-cli init key`
+### `start-cli init-key`
 
 Create a new developer signing key.
 
