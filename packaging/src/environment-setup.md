@@ -59,12 +59,12 @@ brew install squashfs
 
 ## Start CLI
 
-[start-cli](https://github.com/Start9Labs/start-cli/) is the core development toolkit for building StartOS packages. It provides package validation, s9pk file creation, and development workflow management.
+[start-cli](https://github.com/Start9Labs/start-os) is the core development toolkit for building StartOS packages. It provides package validation, s9pk file creation, and development workflow management.
 
 Install using the automated installer script:
 
 ```sh
-curl -fsSL https://start9labs.github.io/start-cli/install.sh | sh
+curl -fsSL https://start9.com/start-cli/install.sh | sh
 ```
 
 ## Verification

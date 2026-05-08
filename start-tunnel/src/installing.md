@@ -130,7 +130,7 @@ Enter the password when prompted.
 Run:
 
 ```bash
-curl -sSL https://start9labs.github.io/start-tunnel/install.sh | sh
+curl -sSL https://start9.com/start-tunnel/install.sh | sh
 ```
 
 > [!NOTE]

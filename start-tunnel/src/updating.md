@@ -25,7 +25,7 @@ start-tunnel update apply
 Re-run the install command:
 
 ```bash
-curl -sSL https://start9labs.github.io/start-tunnel/install.sh | sh
+curl -sSL https://start9.com/start-tunnel/install.sh | sh
 ```
 
 The installer detects the existing installation, prompts for confirmation, and restarts the service.
