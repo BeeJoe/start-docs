@@ -75,6 +75,7 @@
 - [Interfaces](interfaces.md)
 - [Actions](actions.md)
 - [Tasks](tasks.md)
+- [Notifications](notifications.md)
 - [File Models](file-models.md)
 - [Dependencies](dependencies.md)
 - [Makefile](makefile.md)
