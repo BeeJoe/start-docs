@@ -96,7 +96,7 @@ StartTunnel is built on [WireGuard](https://www.wireguard.com/), a modern VPN pr
 
 ## Requirements
 
-- Debian 12+ (Bookworm or newer)
+- Debian 13
 - x86_64, aarch64, or riscv64
 - Root access
 - Public IP (required for clearnet port forwarding; not required for private VPN use)
