@@ -2,6 +2,17 @@
 
 We welcome contributions! Whether you spot a typo or want to suggest new content, fork this repo and submit a PR. If you're not comfortable with that process, [create an issue](https://github.com/Start9Labs/docs/issues) or reach out via our [community channels](https://start9.com/contact).
 
+## Documentation
+
+This repo's docs split across:
+
+- `README.md` — what this is
+- `ARCHITECTURE.md` — how it's built
+- `CONTRIBUTING.md` — this file; how to contribute
+- `CLAUDE.md` — AI-developer operating rules
+
+**These docs must be kept up to date.** When you change project structure, conventions, build process, or product context, update the relevant file(s) in the same change — do not defer.
+
 ## Local Setup
 
 1. Install [Rust](https://rustup.rs):
@@ -34,6 +45,13 @@ We welcome contributions! Whether you spot a typo or want to suggest new content
    ```
    cd start-os && mdbook serve -p 3001
    ```
+
+## Build & Tooling
+
+- `./build.sh` — build all books into `docs/`
+- `./serve.sh` — build + serve on http://localhost:3000
+- `cd <book> && mdbook serve -p 3001` — live-reload a single book
+- `cd scripts && npm run generate-llms-txt` — regenerate `llms.txt` files
 
 ## Writing Docs
 

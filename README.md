@@ -13,6 +13,13 @@ The official documentation for [Start9](https://start9.com) products — coverin
 | [Service Packaging](packaging/) | [docs.start9.com/packaging](https://docs.start9.com/packaging/) | Developer guide for building and publishing StartOS services |
 | [Bitcoin Guides](bitcoin-guides/) | [docs.start9.com/bitcoin-guides](https://docs.start9.com/bitcoin-guides/) | Guides for running Bitcoin and related services on StartOS |
 
+### Product context
+
+- **StartOS 0.4.0** — networking strategies that aren't built into StartOS core (Tor, P2P tunnels, etc.) are distributed as marketplace services. Outbound gateways support a system default plus per-service override.
+- **Service Packaging** — these docs are the single source of truth for service packaging. Code examples are based on the [hello-world](https://github.com/Start9Labs/hello-world-startos) template.
+- **StartTunnel** — a WireGuard-based gateway service for clearnet access. Separate product, separate book.
+- **Bitcoin Guides** — wallet indexes, Electrum servers, archival vs pruned nodes, LND migration. The Bitcoin package on StartOS integrates btc-rpc-proxy for on-demand block fetching, so pruned nodes work transparently with multiple downstream services.
+
 ## How It Works
 
 Built with [mdBook](https://rust-lang.github.io/mdBook/) and deployed via rsync to a VPS. Each product is an independent mdBook instance sharing a common theme.
