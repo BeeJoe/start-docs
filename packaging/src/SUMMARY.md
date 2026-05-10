@@ -79,5 +79,6 @@
 - [Dependencies](dependencies.md)
 - [Makefile](makefile.md)
 - [Writing READMEs](writing-readmes.md)
+- [Writing Instructions](writing-instructions.md)
 - [Publishing](publishing.md)
 - [CLI Reference](cli.md)
