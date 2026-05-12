@@ -48,7 +48,6 @@ export const manifest = setupManifest({
   upstreamRepo: 'https://github.com/original/my-service',
   marketingUrl: 'https://example.com/',
   donationUrl: null,
-  docsUrls: ['https://docs.example.com/guides'],
   description: { short, long },
   volumes: ['main'],
   images: {
@@ -77,7 +76,6 @@ export const manifest = setupManifest({
 | `upstreamRepo`      | URL to the original project repository                 |
 | `marketingUrl`      | URL for the project's main website                     |
 | `donationUrl`       | Donation URL or `null`                                 |
-| `docsUrls`          | Array of URLs to **upstream** documentation            |
 | `description.short` | Locale object (see `manifest/i18n.ts`)                 |
 | `description.long`  | Locale object (see `manifest/i18n.ts`)                 |
 | `volumes`           | Storage volumes (usually `['main']`)                   |

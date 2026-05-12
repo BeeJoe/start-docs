@@ -23,6 +23,7 @@
 - [Sideloading](sideloading.md)
 - [Flavors](flavors.md)
 - [Interfaces](interfaces.md)
+- [Instructions](instructions.md)
 - [Actions](actions.md)
 - [Health Checks](health-checks.md)
 - [Tasks](tasks.md)
