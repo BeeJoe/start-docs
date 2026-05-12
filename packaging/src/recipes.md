@@ -70,3 +70,9 @@ If you're using [Claude Code](https://claude.com/claude-code) (recommended), poi
 |--------|-------------|
 | [Back Up and Restore Data](recipe-backups.md) | Volume snapshots, pg_dump, mysqldump, and incremental rsync strategies |
 | [Add Standalone Health Checks](recipe-health-checks.md) | Sync progress, reachability, and other ongoing checks beyond daemon readiness |
+
+## User Communication
+
+| Recipe | Description |
+|--------|-------------|
+| [Post a Notification to the User](recipe-notification.md) | Send plain or markdown-detailed notifications to the StartOS panel for sync milestones, release notes, or error reports |

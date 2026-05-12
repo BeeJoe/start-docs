@@ -66,6 +66,10 @@
 - [Back Up and Restore Data](recipe-backups.md)
 - [Add Standalone Health Checks](recipe-health-checks.md)
 
+## User Communication
+
+- [Post a Notification to the User](recipe-notification.md)
+
 # Reference
 
 - [Project Structure](project-structure.md)
@@ -76,6 +80,7 @@
 - [Interfaces](interfaces.md)
 - [Actions](actions.md)
 - [Tasks](tasks.md)
+- [Notifications](notifications.md)
 - [File Models](file-models.md)
 - [Dependencies](dependencies.md)
 - [Makefile](makefile.md)
