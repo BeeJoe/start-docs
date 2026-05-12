@@ -1,6 +1,6 @@
 # Notifications
 
-Notifications are messages your service can post to the StartOS notifications panel — the same panel where StartOS shows backup-completion notices, install failures, and similar OS-generated events. Use them to surface information that the user should see eventually but doesn't have to act on immediately: sync milestones, post-update changelogs, recoverable error details, etc. If you need the user to *do* something, use a [Task](./tasks.md) instead.
+Notifications are messages your service can post to the StartOS notifications panel — the same panel where StartOS shows backup-completion notices, install failures, and similar OS-generated events. Use them **sparingly**, only for information the user genuinely needs to know about — most commonly that a long-running action has finished: a sync health check that finally passes, a lengthy reindex or migration completing. They are not a changelog feed or an activity log; the vast majority of what your service does should not produce one. If you need the user to *do* something, use a [Task](./tasks.md) instead.
 
 The host attributes every notification to the calling service automatically — a package cannot post notifications on behalf of another package.
 
@@ -18,23 +18,23 @@ await sdk.notification.create(effects, {
 
 ## Notification With Markdown Details
 
-Pass `data` as markdown text when the notification carries long-form content that doesn't belong inline. The panel still shows `title` and `message` in the row, and a "View Details" button opens `data` rendered as markdown in a large modal. Typical uses: post-update release notes, structured error reports, command output the user might want to copy.
+Pass `data` as markdown text when the notification carries long-form content that doesn't belong inline. The panel still shows `title` and `message` in the row, and a "View Details" button opens `data` rendered as markdown in a large modal. Typical uses: a completion summary for a long-running operation, or a diagnostic report for a recoverable error.
 
 `data` should be markdown text — not a short status string.
 
 ```typescript
 await sdk.notification.create(effects, {
   level: 'success',
-  title: 'Update Complete',
-  message: 'Hello World was updated to 2.0.0. Tap for release notes.',
+  title: 'Reindex Complete',
+  message: 'The transaction index finished rebuilding. Tap for a summary.',
   data: [
-    "## What's new in 2.0.0",
+    '## Reindex summary',
     '',
-    '- Faster sync on slow networks',
-    '- New `--verbose` flag for the daemon',
-    '- Fixed a crash on startup when the data volume was empty',
+    '- Blocks processed: 812,043',
+    '- Duration: 3h 14m',
+    '- Index size: 4.2 GiB',
     '',
-    'See the full changelog at https://example.com/changelog.',
+    'No further action is needed — the service is fully synced.',
   ].join('\n'),
 })
 ```
@@ -60,23 +60,6 @@ await sdk.notification.create(effects, {
   level: 'success',
   title: i18n('Sync Complete'),
   message: i18n('Bitcoin Core has finished initial block download.'),
-})
-```
-
-### Surface Release Notes After an Update
-
-In your `setupOnInit` (or a version migration), post a notification with markdown `data` when the previous version is non-null so the user gets the changelog the next time they open the panel:
-
-```typescript
-export const initializeService = sdk.setupOnInit(async (effects, kind) => {
-  if (kind !== 'update') return
-
-  await sdk.notification.create(effects, {
-    level: 'info',
-    title: i18n('Hello World Updated'),
-    message: i18n('See what changed in this version.'),
-    data: await fs.readFile('/usr/lib/startos/package/CHANGELOG.md', 'utf8'),
-  })
 })
 ```
 

@@ -75,4 +75,4 @@ If you're using [Claude Code](https://claude.com/claude-code) (recommended), poi
 
 | Recipe | Description |
 |--------|-------------|
-| [Post a Notification to the User](recipe-notification.md) | Send plain or markdown-detailed notifications to the StartOS panel for sync milestones, release notes, or error reports |
+| [Post a Notification to the User](recipe-notification.md) | Send a plain or markdown-detailed notification to the StartOS panel when a long-running action finishes or a sync completes |
