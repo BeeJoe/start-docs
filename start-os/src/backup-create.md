@@ -1,6 +1,6 @@
 # Creating Backups
 
-Back up your server's data to a physical drive or a network folder. Backups can be encrypted and scheduled to run automatically.
+Back up your server's data to a physical drive or a network folder.
 
 > [!IMPORTANT]
 > Creating backups is an essential responsibility of self-hosting. If you do not make backups, you _will_ eventually lose your data.
