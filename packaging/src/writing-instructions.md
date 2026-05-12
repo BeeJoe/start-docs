@@ -2,7 +2,7 @@
 
 `instructions.md` is a required file at the root of every StartOS package, alongside `README.md`. Its contents are packed into the s9pk archive and surfaced to the user under the **Instructions** tab on the service details page in StartOS, beneath the Dashboard.
 
-Instructions are **for the human running the service** — not for developers, not for AI assistants. They should orient that person to what the service is, walk them through getting it usefully running on StartOS, and point them at upstream documentation when they need to go deeper.
+Instructions are **for the human running the service** — not for developers, not for AI assistants. They pick up where the marketplace listing left off: by the time someone reads this tab they have seen the short and long description and clicked Install, so don't reintroduce the service. Orient them to what it does *on StartOS*, walk them through getting it usefully running, and point them at upstream documentation when they need to go deeper.
 
 ## Instructions vs. README — they are not the same file
 
@@ -11,10 +11,10 @@ It is tempting to treat `instructions.md` as a copy of the README. Resist this. 
 | | README | instructions.md |
 |---|---|---|
 | **Audience** | Developers, AI assistants, contributors | End users running the service on StartOS |
-| **Question it answers** | "How does this package work, and how does it differ from running the upstream service directly?" | "I just installed this. What is it, and how do I actually use it?" |
+| **Question it answers** | "How does this package work, and how does it differ from running the upstream service directly?" | "I just installed this — now what? How do I use it on StartOS?" |
 | **Tone** | Technical, structured, scannable for parsing | Practical, instructional, written in second person |
 | **Versions / image tags** | Avoided (manifest is source of truth) | Avoided for the same reason |
-| **Upstream behavior** | "Anything not listed here behaves as upstream documents" | Linked to at the bottom; never duplicated |
+| **Upstream behavior** | "Anything not listed here behaves as upstream documents" | Linked from the Documentation section; never duplicated |
 | **Surfaced where** | The package repository on GitHub | Inside the StartOS UI, post-install |
 
 If your README is a reference manual, your instructions are a quick-start guide for a non-developer who just clicked Install.
@@ -23,20 +23,26 @@ If your README is a reference manual, your instructions are a quick-start guide 
 
 A good `instructions.md` covers, roughly in this order:
 
-1. **What this service is** — one or two sentences. Assume the reader has heard of it but may not know exactly what it does. Link the project's home page or a recognizable description in the upstream docs.
+1. **A brief orientation — optional.** The reader already saw the marketplace short and long description before clicking Install, so don't restate them. A one-line "you've installed X — here's how to use it on StartOS" framing is fine; so is genuinely new context the listing didn't cover. If there's nothing to add, skip straight to the next section. Don't pad.
 
-2. **What it gives you on StartOS** — the practical answer to "why did I just install this?" Keep it concrete: the interfaces it exposes, the data it manages, the experience the StartOS package adds on top of upstream.
+2. **Documentation links.** A `## Documentation` section with a link to the upstream documentation — a few words on what each one is ("the upstream README", "the official Foo configuration reference") — plus the project home page, support channels, and anything else the user might want when they outgrow these instructions. Put it near the top, right after the orientation: "where do I read more?" is often the highest-value thing on the page. (A longer instructions file can keep it at the end instead.) Link to canonical, stable URLs — the project's docs site or its `master` README, not a specific commit.
 
-3. **Getting set up** — the smallest sequence of steps that takes a fresh install to a usable state. Use numbered lists. Reference real action names, real interfaces, and real screens that exist in the StartOS UI for this service. If setup requires a dependency, say so plainly: "Install Bitcoin Core first" rather than "satisfy the dependency."
+3. **What it gives you on StartOS** — the practical answer to "why did I just install this?" Keep it concrete: the interfaces it exposes, the data it manages, the experience the StartOS package adds on top of upstream.
 
-4. **Using the available features** — once the service is running, what can the user actually do with it? Describe the interfaces (web UI, RPC, etc.), the actions available from the StartOS sidebar, and any first-time tasks they will see prompted by the package.
+4. **Getting set up** — the smallest sequence of steps that takes a fresh install to a usable state. The reader has already installed the service — don't include download or install steps. Start from first launch. Use numbered lists. Reference real action names, real interfaces, and real screens that exist in the StartOS UI for this service. If setup requires a dependency, say so plainly: "Install Bitcoin Core first" rather than "satisfy the dependency."
 
-5. **Important limitations** — anything that will surprise the user. Things the upstream version does that this package does not. Features deliberately disabled. Restart-required settings. Performance constraints. Be honest; users prefer "this doesn't support X yet" over discovering it themselves.
+5. **Using the available features** — once the service is running, what can the user actually do with it? Describe the interfaces (web UI, RPC, etc.), the actions available from the StartOS sidebar, and any first-time tasks they will see prompted by the package.
 
-6. **External links** — at the end. Upstream documentation, project home page, support channels, anything else the user might want when they outgrow these instructions. Link to canonical, stable URLs (the project's docs site, not a specific GitHub commit).
+6. **Important limitations** — anything that will surprise the user. Things the upstream version does that this package does not. Features deliberately disabled. Restart-required settings. Performance constraints. Be honest; users prefer "this doesn't support X yet" over discovering it themselves.
+
+> [!NOTE]
+> Older StartOS manifests carried a `docsUrls` array for upstream documentation links. That field has been removed — those links belong in the `## Documentation` section of this file now, where you can give each one the context a bare URL in the manifest never had.
 
 ## What does not belong in instructions
 
+- **A restatement of the marketplace description.** The reader saw the short and long description before installing — opening with "Foo is a self-hosted bar" wastes their time. Start from "now what."
+- **Install or download steps.** They've already installed the service; that's why they're on this tab. Begin at first launch.
+- **How StartOS itself works.** The interface panel's copy-address / QR-code / LAN-Tor-domain controls, the Dashboard and Instructions tabs, how backups and updates work, how to start or stop a service — these are platform features a user learns once, not per-package. Mention only what's specific to *this* service: which interfaces it exposes and what each is for, which actions it adds and when to run them. Naming a screen to send the user to ("open it from the **Dashboard** tab") is fine; explaining what that screen is, isn't.
 - **The full configuration reference.** Link to upstream for that.
 - **Version numbers and image tags.** They go stale every release; the manifest is the source of truth.
 - **Architectural detail about how the package is built.** That is the README's job.
@@ -55,10 +61,18 @@ A good `instructions.md` covers, roughly in this order:
 
 ## Suggested structure
 
+Use the sections that apply — a trivial service might be two paragraphs and a Documentation list; a complex one might need every section below and more. Don't include a section just to have it (if the service has no actions, you usually needn't say so).
+
 ```markdown
 # [Service Name]
 
-[One- or two-sentence description of what the service is. Link the project home or a recognizable upstream description.]
+[Optional. One or two sentences only if you have something to add beyond the marketplace short/long description the reader already saw — or a one-line "you've installed X; here's how to use it on StartOS" framing. Otherwise delete this line and start with the section below.]
+
+## Documentation
+
+- [Upstream documentation](https://docs.example.org) — what it is in a few words (the config reference, the upstream README, etc.).
+- [Project home](https://example.org)
+- [Support / community](https://example.org/support)
 
 ## What you get on StartOS
 
@@ -78,7 +92,7 @@ A good `instructions.md` covers, roughly in this order:
 
 ### Web interface
 
-[How to reach it, what they will see first.]
+[What this interface is for and what the user sees first — a login screen, a setup wizard, an empty dashboard. Not how the universal interface-panel controls work; those are identical in every service.]
 
 ### Actions
 
@@ -93,21 +107,16 @@ A good `instructions.md` covers, roughly in this order:
 - [Anything that will surprise a user coming from upstream.]
 - [Features deliberately disabled or not yet supported.]
 - [Restart-required settings, performance caveats, etc.]
-
-## Learn more
-
-- [Project home](https://example.org)
-- [Upstream documentation](https://docs.example.org)
-- [Support / community](https://example.org/support)
 ```
 
 ## Pre-publish checklist
 
 - [ ] File exists at `instructions.md` at the package root (the build will fail otherwise).
 - [ ] Written for the user, not the developer — no internal SDK terminology.
-- [ ] Setup steps walk a fresh install to a usable state.
+- [ ] Does not restate the marketplace short/long description, contains no install or download steps, and doesn't explain StartOS platform features (interface controls, tabs, backups) the user already knows.
+- [ ] Setup steps walk from first launch to a usable state.
 - [ ] Every action and interface mentioned actually exists in the package.
 - [ ] No hard-coded version numbers, image tags, or secrets.
 - [ ] Limitations section is honest about what the package cannot do.
-- [ ] Upstream links go to canonical, stable URLs.
+- [ ] A `## Documentation` section links the upstream docs (with a few words on what each is) and any other canonical, stable URLs.
 - [ ] Renders cleanly in the StartOS Instructions tab on a real install.
