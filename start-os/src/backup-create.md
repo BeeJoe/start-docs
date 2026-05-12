@@ -50,7 +50,7 @@ A network folder backup sends your encrypted backup over the LAN to a shared fol
 
 ### Step 1. Create a Shared Folder
 
-{{#tabs global="platform"}}
+{{#tabs global="backup-target"}}
 
 {{#tab name="Mac"}}
 
@@ -342,7 +342,7 @@ A network folder backup sends your encrypted backup over the LAN to a shared fol
 
 1. Complete the form:
 
-   {{#tabs global="platform"}}
+   {{#tabs global="backup-target"}}
 
    {{#tab name="Mac"}}
    1. **Hostname**: The hostname or IP address of your Mac (see the tip in the section above).

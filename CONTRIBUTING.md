@@ -83,15 +83,21 @@ Custom titles are **not supported** — `> [!WARNING] My Title` will break. Put 
 Use mdbook-tabs for platform-specific content:
 
 ```markdown
-{{#tabs global="os"}}
-{{#tab name="Linux"}}
-Linux instructions here.
-{{#endtab}}
+{{#tabs global="platform"}}
 {{#tab name="Mac"}}
 Mac instructions here.
 {{#endtab}}
+{{#tab name="Linux"}}
+Linux instructions here.
+{{#endtab}}
 {{#endtabs}}
 ```
+
+`global="..."` makes a tab group's selection sticky across pages (via `localStorage`, mirrored to a `?<global>=<tab>` URL param). Every group sharing a `global` name **must use identical tab labels** — a stored label that isn't present in a group is silently ignored, so mismatched sets fail to sync. So:
+
+- OS pickers use `global="platform"` with exactly these labels: `Mac`, `Windows`, `Linux`, `iOS`, `Android / Graphene`. Put distro/version specifics in `####` sub-sections within a tab, not in extra tabs.
+- Anything that isn't a general OS picker (backup targets, cloud providers, …) gets its own `global` — don't overload `platform`.
+- Omit `global` for a one-off, page-local group.
 
 Avoid nesting tabs — use separate sections with single-level tabs instead.
 

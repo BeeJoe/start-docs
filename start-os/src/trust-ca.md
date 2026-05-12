@@ -114,7 +114,9 @@ This guide applies to Android 13+, GrapheneOS, CalyxOS, and LineageOS.
 1. If using Firefox, you must use [Firefox Beta](https://play.google.com/store/apps/details?id=org.mozilla.firefox_beta), then complete [this final step](#android--graphene).
 
 {{#endtab }}
-{{#tab name="Debian / Ubuntu" }}
+{{#tab name="Linux" }}
+
+#### Debian / Ubuntu
 
 This should work for most Debian-based systems, such as Debian, Ubuntu, Mint, PopOS etc.
 
@@ -139,8 +141,7 @@ This should work for most Debian-based systems, such as Debian, Ubuntu, Mint, Po
 
 1.  If using Firefox, Thunderbird, or Librewolf, complete this [final step](#3-mozilla-apps-firefox-thunderbird-librewolf).
 
-{{#endtab }}
-{{#tab name="Arch / Garuda" }}
+#### Arch / Garuda
 
 1.  Move into the directory where you downloaded your Root CA (usually `~/Downloads`), for example:
 
@@ -154,8 +155,7 @@ This should work for most Debian-based systems, such as Debian, Ubuntu, Mint, Po
 
     Despite no output from the last command, you can test your app right away.
 
-{{#endtab }}
-{{#tab name="CentOS / Fedora" }}
+#### CentOS / Fedora
 
 1.  Move into the directory where you downloaded your Root CA (usually `~/Downloads`), for example:
 

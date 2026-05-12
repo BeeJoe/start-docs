@@ -220,7 +220,7 @@ Trust the Root CA on each device that will access the web UI. Select your operat
 
 1. Save the file as `tunnel-ca.crt` (plaintext).
 
-1. [Trust the certificate](/start-os/trust-ca.html?platform=Debian+%2F+Ubuntu).
+1. [Trust the certificate](/start-os/trust-ca.html?platform=Linux).
 
 {{#endtab }}
 {{#tab name="Android / Graphene" }}
