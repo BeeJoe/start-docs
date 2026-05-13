@@ -50,6 +50,11 @@ This guide is for flashing StartOS to a USB drive, then installing it onto a des
 
 1. Remove the newly-flashed USB drive from your computer and plug it into your server. Choose the fastest available USB 3.0+ port - typically this is blue or labeled "SS" (SuperSpeed).
 
+1. Plug your server into a surge protector — never directly into the wall.
+
+   > [!IMPORTANT]
+   > A surge protector is **required** to safely operate your server. Power surges can permanently damage hardware and corrupt your data drive. An [uninterruptible power supply (UPS)](surge-and-ups.md) is strongly recommended for added protection.
+
 1. Power on your server, booting from USB.
 
    > [!TIP]

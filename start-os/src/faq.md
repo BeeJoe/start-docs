@@ -2,6 +2,10 @@
 
 Common issues encountered during setup and daily use of StartOS, including network connectivity problems, diagnostic mode, clock sync failures, and service-specific troubleshooting.
 
+## Do I need a surge protector for my server?
+
+Yes. **Always plug your server into a surge protector — never directly into the wall.** Servers are always-on devices, and a single power surge (from lightning, utility events, or appliances cycling on the same circuit) can permanently damage your hardware and corrupt your data drive. A standard surge protector is the minimum requirement. An [uninterruptible power supply (UPS)](surge-and-ups.md) is strongly recommended, as it also protects against brownouts and gives you time to shut down cleanly during a power loss.
+
 ## I do not have access to Ethernet
 
 Ethernet is strongly recommended. Servers are always-on, critical devices and should use a wired connection. However, if you do not have access to a router, such as in a work or school environment, there are two options:

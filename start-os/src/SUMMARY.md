@@ -8,6 +8,7 @@
 
 - [Installing StartOS](installing-startos.md)
 - [Update to StartOS 0.4.0](update-040.md)
+- [Surge Protector and UPS](surge-and-ups.md)
 - [Initial Setup](initial-setup.md)
 - [Trusting Your Root CA](trust-ca.md)
 

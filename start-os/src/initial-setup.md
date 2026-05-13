@@ -9,6 +9,9 @@ After [installing StartOS](installing-startos.md), follow these steps to initial
 
 1. Connect your server to power and Ethernet.
 
+   > [!IMPORTANT]
+   > **Always plug your server into a surge protector — never directly into the wall.** Power surges from lightning, utility events, or appliances on the same circuit can permanently damage your server's hardware and corrupt your data drive. A standard surge protector is the minimum; an [uninterruptible power supply (UPS)](surge-and-ups.md) is strongly recommended for added protection against brownouts and unexpected power loss.
+
 1. From a computer connected to the same Local Area Network (LAN) as your server, open a browser and visit [http://start.local](http://start.local).
 
 1. Select a setup option:
