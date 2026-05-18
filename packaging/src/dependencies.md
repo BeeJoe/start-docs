@@ -38,6 +38,18 @@ dependencies: {
 }
 ```
 
+## What `setupDependencies` Returns
+
+The object you return from `setupDependencies()` declares what state each dependency should be in for your service to be considered "fully operational." It drives the **warning UI** the user sees on the service detail page — if a listed dependency isn't installed, isn't running, or has a listed health check failing, StartOS shows them a warning indicator and links them to the offending service.
+
+It does **not** gate your service's startup. Your service starts whenever the user starts it, regardless of dependency state. The fields:
+
+- `kind: 'running'` — user should have this dependency running. `kind: 'exists'` — user only needs it installed.
+- `versionRange` — semver range the dependency must satisfy.
+- `healthChecks` — names of the dependency's daemons (their `ready` IDs) or standalone health checks (`addHealthCheck` IDs) that should be passing.
+
+If your service genuinely cannot operate before a dependency reaches a particular state (a file exists, an RPC responds, a config is generated), handle that at runtime in `setupMain` — poll the dependency, retry, or surface your own error. Don't rely on the dependency declaration to block startup for you.
+
 ## Creating Cross-Service Tasks
 
 Use `sdk.action.createTask()` in `dependencies.ts` to trigger an action on a dependency. The action must be exported from the dependency's package.
