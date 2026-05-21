@@ -1021,43 +1021,6 @@ Dump database contents, optionally filtered by JSON pointer.
 
 Apply a patch expression to the database.
 
-### Registry Webhooks
-
-Manage subscribers and inspect/replay outbound webhook events emitted by the registry. Subscribers are managed at runtime — there is no config-file webhook setting. See [Hosting a Registry — Administration § Webhooks](/packaging/host-registry-administration.html#webhooks) for the wire contract and consumer guidance.
-
-### `start-cli registry webhook subscriber add <URL>`
-
-Add a webhook subscriber. `URL` must be `http` or `https`. Idempotent — adding the same URL twice is a no-op. Takes effect on the next event without a restart.
-
-### `start-cli registry webhook subscriber remove <URL>`
-
-Remove a webhook subscriber. Idempotent.
-
-### `start-cli registry webhook subscriber list`
-
-List the configured subscriber URLs.
-
-- `--format` — Output format
-
-### `start-cli registry webhook list`
-
-List recorded webhook events and their delivery attempts, newest first.
-
-- `--topic <TOPIC>` — Only return events matching this topic (e.g. `package.version.add`)
-- `--since <TIMESTAMP>` — Only return events at or after this RFC 3339 timestamp
-- `--limit <N>` — Maximum number of events to return
-- `--format` — Output format
-
-### `start-cli registry webhook replay <EVENT_ID>`
-
-Re-deliver a previously emitted event to every configured subscriber. Reuses the original event id, so a consumer that dedupes by event id will treat the replay as an idempotent retry of the original event.
-
-### `start-cli registry webhook pubkey`
-
-Print this registry's webhook public key as a base64-encoded Ed25519 SPKI DER (~60 chars on a single line) — the same form sent in the `x-startos-registry-pubkey` header on every webhook delivery. Operators publish the output to webhook consumers, which add it to their allowlist of trusted registries. Unauthenticated — the key is, by definition, public.
-
-- `--format` — Output format
-
 ## Initial Setup
 
 Commands for the first-boot setup process.
