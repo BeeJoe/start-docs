@@ -172,6 +172,36 @@ To promote from alpha to beta to stable (or beta to stable):
 2. Update `index.ts` to export the new version as `current`
 3. Move the old version to the `other` array — this is where migration history starts
 
+## Release Notes
+
+`releaseNotes` renders as markdown in the StartOS UI. **Match the length to the content — if it fits on one line, write one line.** A single-change release doesn't need bullets, headers, or a backtick template literal. Reach for bullets when there are several items in one category; add bold section headers (`**Bumps**`, `**Features**`, `**Fixes**`, `**Internal**`) only when the release spans more than one category. Localize the headers in every locale; don't leave them in English.
+
+```ts
+// One change: plain string.
+releaseNotes: { en_US: 'Bumps Ghost → 6.38.0.', /* …other locales */ },
+
+// Several items, one category: bullets, no header.
+releaseNotes: {
+  en_US: `- Ghost → 6.38.0
+- MySQL → 8.4.9`,
+  // …
+},
+
+// Multiple categories: headers + bullets.
+releaseNotes: {
+  en_US: `**Bumps**
+
+- Ghost → 6.38.0
+
+**Fixes**
+
+- Crash on backup restart.`,
+  // …
+},
+```
+
+Use a template literal (backticks) only when the note actually spans multiple lines, and never indent its content lines.
+
 ## Migrations
 
 Migrations run when users update between versions:

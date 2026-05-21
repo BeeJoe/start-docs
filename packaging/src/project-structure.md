@@ -30,22 +30,27 @@ my-service-startos/
 │   ├── backups.ts          # Backup volumes and exclusions
 │   ├── dependencies.ts     # Service dependencies
 │   ├── index.ts            # Exports (boilerplate)
-│   ├── interfaces.ts       # Network interface definitions
+│   ├── interfaces.ts       # Network interface definitions (optional - not in barebones scaffold)
 │   ├── main.ts             # Daemon runtime and health checks
 │   ├── sdk.ts              # SDK initialization (boilerplate)
-│   ├── utils.ts            # Package-specific utilities
+│   ├── utils.ts            # Package-specific utilities (empty in barebones scaffold)
 │   └── versions/           # Version management and migrations
 ├── .gitignore
-├── CONTRIBUTING.md         # Build instructions for contributors
+├── AGENTS.md               # Pointer for AI coding agents — read CONTRIBUTING.md first
+├── CLAUDE.md               # One-line `@AGENTS.md` import for Claude Code
+├── CONTRIBUTING.md         # Doc-sync rule, environment setup, build, CI/CD, contribution flow
 ├── Dockerfile              # Optional - for custom images
 ├── icon.svg                # Service icon (max 40 KiB)
+├── instructions.md         # User-facing instructions packed into the .s9pk (see Writing Instructions)
 ├── LICENSE                 # Package license (symlink to upstream)
 ├── Makefile                # Project config (includes s9pk.mk)
 ├── s9pk.mk                 # Shared build logic (boilerplate)
 ├── package.json
 ├── package-lock.json
 ├── README.md               # Service documentation (see Writing READMEs)
+├── TODO.md                 # Pending work on the package
 ├── tsconfig.json
+├── UPDATING.md             # Per-package upstream-version tracking
 └── upstream-project/       # Git submodule (optional)
 ```
 
@@ -149,9 +154,32 @@ jobs:
       contents: write
 ```
 
+### AGENTS.md and CLAUDE.md
+
+These two files are **pointers, not content.** Generic packaging knowledge — SDK patterns, the disciplines on the [Development Workflow](./workflow.md) page, the rules throughout this guide — lives in one canonical place: the packaging guide. It is **not** copied into each package repo, where 40+ duplicates would drift out of sync. `AGENTS.md` and `CLAUDE.md` only identify the repo and point an agent at the repo's own `CONTRIBUTING.md`.
+
+`AGENTS.md` is a short, repo-identical pointer: it states that this is a StartOS service-package repo and tells any AI coding agent to read `CONTRIBUTING.md` (and the documents it links) before doing anything. Keep it to a few lines; carry no substantive rules here, and **do not turn it into a web-fetch driver** — don't instruct the agent to pull guide pages over the web up front. Developers are expected to work with the guide checked out locally alongside the package (see [Environment Setup](./environment-setup.md)). The local-first navigation — read `start-docs/packaging/src/` directly, fall back to <https://docs.start9.com/packaging> only when no local copy exists — is set up once by the workspace-level `CLAUDE.md`, not repeated per repo.
+
+`CLAUDE.md` is a one-line import of that same file:
+
+```
+@AGENTS.md
+```
+
+Claude Code auto-loads `CLAUDE.md` when it opens the repo, and the `@AGENTS.md` import pulls in the pointer so the same entry point covers both Claude and any other agent that reads `AGENTS.md` by convention. Don't duplicate anything into `CLAUDE.md`; keep the content in `AGENTS.md` and let the import do the work.
+
 ### CONTRIBUTING.md
 
-Build instructions and CI pipeline overview for contributors. Keep it short -- link to the [StartOS Packaging Guide](https://docs.start9.com/packaging/) for environment setup, provide `npm ci` and `make` as a quick start, and describe how the CI pipeline handles builds and releases.
+The per-repo home for *how to work in this repo* — the one committed file that travels with the package and carries its contribution workflow, for both humans and AI agents. Keep it **thin and link-heavy**: state the repo-specific facts inline (the package's own files, its CI workflow names, its build command) and link out to the packaging guide for everything generic, rather than restating it. Because this file is committed and browsable on GitHub, those links use the public `docs.start9.com` URLs; they are on-demand references (followed when a task needs them, resolved against the local checkout first), not pages to fetch up front. It contains:
+
+- **Keep these in sync** — a doc-sync pointer naming `README.md`, `instructions.md`, and `TODO.md`, with the rule "Read all three before starting any work" and the requirement that any code change affecting user-visible behavior updates `README.md` and `instructions.md` in the same change.
+- **Environment setup** — links to [Environment Setup](./environment-setup.md).
+- **Building** — `npm ci && make`, linking to the [Makefile](./makefile.md) reference.
+- **Updating the upstream version** — points at the package's `UPDATING.md` for per-package bump steps, and references [Versions](./versions.md) for the rule on when to create a new version file versus renaming the existing one in place.
+- **CI/CD** — a short summary of the three workflows under `.github/workflows/` (see above) and the manual promotion to `beta`/`prod`.
+- **How to contribute** — fork, branch from `master`, open a PR back to `master`.
+
+Match the template that every existing package follows — copy `CONTRIBUTING.md` from a recent package (e.g. [hello-world-startos](https://github.com/Start9Labs/hello-world-startos/blob/master/CONTRIBUTING.md)) and adjust the per-package details.
 
 ### Dockerfile (optional)
 
@@ -160,6 +188,10 @@ It is recommended to pull an existing Docker image as shown in the [Quick Start]
 ### icon.svg
 
 The service's visual identifier. Maximum size is 40 KiB. Accepts `.svg`, `.png`, `.jpg`, and `.webp` formats.
+
+### instructions.md
+
+User-facing instructions packed into the `.s9pk` and rendered on the **Instructions** tab in StartOS after install. Required at the package root — the build fails if missing. See [Writing Instructions](./writing-instructions.md) for what belongs in this file (and what does not).
 
 ### LICENSE
 
@@ -177,6 +209,21 @@ If you are pulling a pre-built Docker image (no submodule), copy the license tex
 
 Service documentation following the structure described in [Writing READMEs](./writing-readmes.md). Every README should document how the StartOS package differs from the upstream service.
 
+### TODO.md
+
+A running list of pending work on this package. Add items when you defer work; remove them when complete. An empty `TODO.md` (just the `# TODO` heading) is fine — keep the file present so contributors know where to record items.
+
+### UPDATING.md
+
+Per-package upstream-version tracking. Each package wraps one or more upstream sources (a Docker image, a git submodule, a Start9-built image), and the exact registry, tag format, and pinned field differs. `UPDATING.md` captures that detail so a bump can be applied without rediscovering it each time.
+
+It has two sections:
+
+- **Determining the upstream version** — for each upstream this package pulls, the canonical place to find the latest version (e.g. `gh release view -R <org>/<repo> --json tagName -q .tagName`, a Docker Hub tags listing, etc.) and the manifest field where the current pin lives (typically `images.<name>.source.dockerTag` in `startos/manifest/index.ts`).
+- **Applying the bump** — the exact file and field to edit, including any tag-format quirks (e.g. drop the leading `v`, append `-alpine`, keep the major version aligned with a sibling image).
+
+Packages with multiple upstream sources (e.g. a service plus its database sidecar) get one subsection per source under each heading. CONTRIBUTING.md's "Updating the upstream version" section points here for the per-package detail and adds the cross-cutting rule about renaming the file in `startos/versions/` versus creating a new one.
+
 ## assets/
 
 Stores supplementary files and scripts needed by the service, such as configuration generators or entrypoint scripts. **Required** -- the `assets/` directory must exist and contain at least one file (e.g. `ABOUT.md`) for git to track it and for the build to succeed.
@@ -190,7 +237,7 @@ The `startos/` directory is where you take advantage of the StartOS SDK and APIs
 | File              | Purpose                                         |
 | ----------------- | ----------------------------------------------- |
 | `main.ts`         | Daemon runtime configuration and health checks  |
-| `interfaces.ts`   | Network interface definitions and port bindings |
+| `interfaces.ts`   | Network interface definitions and port bindings (optional) |
 | `backups.ts`      | Backup volumes and exclusion patterns           |
 | `dependencies.ts` | Service dependencies and version requirements   |
 | `sdk.ts`          | SDK initialization (boilerplate)                |
@@ -209,9 +256,11 @@ The `startos/` directory is where you take advantage of the StartOS SDK and APIs
 
 This file is plumbing, used for exporting package functions to StartOS.
 
-#### interfaces.ts
+#### interfaces.ts (optional)
 
 `setupInterfaces()` is where you define the service interfaces and determine how they are exposed. This function executes on service install, update, and config save. It takes the user's config input as an argument, which will be `null` for install and update.
+
+The barebones scaffold ships no `interfaces.ts` — many services (background workers, sidecars) expose nothing on the network. When a service does, add this file and wire its `setInterfaces` into `init/index.ts` (conventionally before `setDependencies`).
 
 #### main.ts
 

@@ -25,6 +25,4 @@ After [installing StartOS](installing-startos.md), follow these steps to initial
 
 1. Set your [server name](server-name.md). Your server's [mDNS address](mdns.md) is derived from this name.
 
-1. Following successful initialization, you will be prompted to download a `StartOS-info.html`. This file contains your server's mDNS address and Root Certificate Authority (Root CA). It is recommended to save this file for future reference.
-
-1. Click "Continue to Login" and follow instructions for [Trusting your Root CA](./trust-ca.md)
+1. Once initialization completes, open your server's permanent local address, then follow the instructions for [Trusting your Root CA](./trust-ca.md) to establish a secure connection with your server.

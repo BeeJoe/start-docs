@@ -1,6 +1,6 @@
 # Environment Setup
 
-Before building service packages, you need to install several development tools on your workstation. This page lists each prerequisite and how to install it. The final section — [Coding with Claude](#coding-with-claude-recommended) — sets up the AI-assisted development environment that all packaging is designed around.
+Before building service packages, you need to install several development tools on your workstation. This page lists each prerequisite and how to install it. The final section — [Set Up Your Packaging Workspace](#set-up-your-packaging-workspace) — scaffolds the AI-assisted workspace that all packaging is designed around.
 
 ## StartOS Device
 
@@ -82,53 +82,88 @@ start-cli --version
 > [!TIP]
 > If any command is not found, revisit the installation steps for that tool and ensure it is on your system PATH.
 
-## Coding with Claude (Recommended)
+## Set Up Your Packaging Workspace
 
-AI coding tools like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) can dramatically accelerate your packaging workflow. If you are using Claude, Start9 highly recommends using the Opus 4.7 or later model. To get the best results, set up a workspace that gives Claude direct access to the packaging guide.
+StartOS packaging is designed to be done with an AI coding agent. `start-cli` scaffolds an AI-ready **packaging workspace** in one command — a directory that holds the packaging guide and an agent-context file, so any assistant you open there already knows how to build a StartOS package. If you use [Claude Code](https://docs.anthropic.com/en/docs/claude-code), Start9 recommends the Opus 4.7 or later model.
 
-### 1. Create a workspace directory
+### Create the workspace
 
-Create a directory that will serve as your AI-assisted workspace. Name it whatever you want. Here we use `ai-workspace`
-
-```
-mkdir ai-workspace && cd ai-workspace
-```
-
-### 2. Clone the docs
-
-Clone the Start9 docs repo so Claude can read the packaging guide locally:
-
-```
-git clone https://github.com/Start9Labs/start-docs.git start-docs
+```sh
+start-cli s9pk init-workspace my-workspace
+cd my-workspace
 ```
 
-### 3. Add a CLAUDE.md
-
-> [!IMPORTANT]
-> This is critical. Without this file, Claude will not know how to package a service for StartOS.
-
-Download the provided `CLAUDE.md` and place it in your workspace:
-
-<a href="SAMPLE-CLAUDE.txt" download="CLAUDE.md" style="display:inline-block;padding:0.5em 1.2em;background:#58a6ff;color:#fff;border-radius:6px;text-decoration:none;font-weight:600">Download CLAUDE.md</a>
-
-This file instructs Claude to use the local packaging guide as its primary reference.
-
-### 4. Add your package repo
-
-Clone or create your package repo inside the workspace:
+This clones the packaging guide into `start-docs/`, sets up the agent-context files (`AGENTS.md`, your own `AGENTS.local.md`, and a `CLAUDE.md` that loads both), and creates a `.startos/` directory that marks the workspace and holds your package-signing key and host/registry config:
 
 ```
-git clone https://github.com/user/my-service-startos.git
+my-workspace/
+├── .startos/              ← workspace marker: build-key (signs your packages) + config.yaml (hosts, registries)
+├── AGENTS.md              ← agent context (symlink into start-docs), read by AI assistants
+├── AGENTS.local.md        ← your own notes, kept across guide updates
+├── CLAUDE.md              ← loads AGENTS.md + AGENTS.local.md (Claude Code)
+└── start-docs/            ← the packaging guide, read locally
 ```
 
-### 5. Your workspace should look like this:
+The context lives once, at the workspace root — it is never copied into your package repos. Open the workspace in your AI tool and it picks up `AGENTS.md` / `CLAUDE.md` automatically.
+
+### Create a package
+
+From the workspace root, scaffold a new package:
+
+```sh
+start-cli s9pk init-package "My Service"
+```
+
+This creates `my-service-startos/` (the name is normalized to the package ID) as a barebones, buildable hello-world clone with a `TODO.md` checklist. Point your agent at that `TODO.md` and work it top to bottom to take the package from clone to release-ready. Your workspace now looks like:
 
 ```
-ai-workspace/
-├── CLAUDE.md            ← AI instructions (not committed anywhere)
-├── start-docs/          ← packaging guide for Claude to read
-└── my-service-startos/  ← your package repo
+my-workspace/
+├── .startos/
+├── AGENTS.md
+├── AGENTS.local.md
+├── CLAUDE.md
+├── start-docs/
+└── my-service-startos/    ← your new package
 ```
+
+To work on an existing package instead, clone it into the workspace alongside `start-docs/`.
+
+### Hosts and registries
+
+The `.startos/config.yaml` created with the workspace defines named **host** targets (your StartOS boxes) and **registry** targets:
+
+```yaml
+schema: 1
+host:
+  default: https://dev-vm.local
+  prod: https://prodbox.local
+registry:
+  default: https://alpha-registry-x.start9.com
+  beta: https://beta-registry.start9.com
+  prod: https://registry.start9.com
+```
+
+The `registry` entries are Start9's, pre-filled; edit the `host` entries to point at your own boxes.
+
+Any `start-cli` command takes `-H`/`--host` and `-r`/`--registry`. Pass a **profile name** to use one of these entries, or a **URL** to target something directly:
+
+```sh
+start-cli -H prod <command>                  # uses host.prod
+start-cli -r beta <command>                  # uses registry.beta
+start-cli -H https://my-box.local <command>  # a URL works too
+```
+
+With no flag, the `default` entry is used. `start-cli` finds this config by walking up from the current directory, so it works anywhere inside the workspace.
 
 > [!NOTE]
-> Do not put `start-docs/` or `CLAUDE.md` inside your package repo. They live alongside your repo in the workspace.
+> `make install` and `make publish` read a single `host:` / `registry:` URL from the global `~/.startos/config.yaml` instead of these per-workspace profiles. See [Makefile](./makefile.md).
+
+### Keep it current
+
+The guide, the package template, and the agent context all live in `start-docs/`, so syncing it refreshes everything at once. Pull it at the start of each session:
+
+```sh
+git -C start-docs pull --ff-only
+```
+
+There's no separate update command — re-running `init-workspace` on an existing workspace just fills in anything missing, and your `AGENTS.local.md` is never touched.

@@ -4,19 +4,7 @@ Every `.s9pk` needs a registry to live in before it can be installed on a StartO
 
 ## Self-Hosted Registry
 
-The fastest and most autonomous path is to run your own registry.
-
-1. Install a **registry service** from any existing registry onto a StartOS device.
-2. Configure its interface to reach your audience: LAN for private testing, `.onion` for Tor-reachable distribution, or a clearnet domain for public access.
-3. Publish your `.s9pk` to it with `start-cli`:
-
-   ```sh
-   start-cli s9pk publish \
-     --url=https://my-registry.example.com \
-     myservice_x86_64.s9pk
-   ```
-
-Testers install by adding your registry's URL to their StartOS and selecting your package from the list. If you want distribution to stay entirely under your control — not just during early testing, but indefinitely — this is all you need. Plenty of packages are distributed this way permanently.
+The fastest and most autonomous path is to run your own registry — install the `startos-registry` service on a StartOS device, point `start-cli` at it, and publish. See [Hosting a Registry](host-registry.md) for the full walkthrough (install, first-run setup, administration, webhook events).
 
 You can run a self-hosted registry in parallel with a Start9 Community submission: developers often keep an alpha/testing registry of their own while a more stable build is promoted through the community pipeline.
 

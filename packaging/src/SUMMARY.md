@@ -8,6 +8,7 @@
 
 - [Environment Setup](environment-setup.md)
 - [Quick Start](quick-start.md)
+- [Development Workflow](workflow.md)
 
 # Recipes
 
@@ -69,6 +70,12 @@
 ## User Communication
 
 - [Post a Notification to the User](recipe-notification.md)
+
+# Hosting a Registry
+
+- [Overview](host-registry.md)
+- [Setup](host-registry-setup.md)
+- [Administration](host-registry-administration.md)
 
 # Reference
 
