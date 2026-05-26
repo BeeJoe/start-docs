@@ -31,4 +31,4 @@ If `tsc`, a test, or the pack step fails — even on something unrelated to your
 
 ## Don't create unnecessary version files
 
-Most version bumps update the existing file in `startos/versions/` in place rather than adding a new one. See [Versions — When to Create a New Version File](./versions.md#when-to-create-a-new-version-file) for the rule, and [Release Notes](./versions.md#release-notes) for how to write the notes that accompany a bump.
+Most version bumps edit `startos/versions/current.ts` in place — change the `version` and `releaseNotes`, leave `index.ts` and the filename alone. A new file is only spun off when the bump carries a migration. See [Versions — When to Create a New Version File](./versions.md#when-to-create-a-new-version-file) for the rule, and [Release Notes](./versions.md#release-notes) for how to write the notes that accompany a bump.

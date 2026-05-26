@@ -87,7 +87,7 @@ The full rules are in `start-docs/packaging/src/workflow.md`; this is the digest
 - **Keep `README.md` and `instructions.md` in sync.** After any change to user-visible behavior, review both and update them in the same change. Content rules: `writing-readmes.md`, `writing-instructions.md`.
 - **Iterate with a dirty tree; commit once.** The `-modified` pack-hash suffix is informational — don't commit between test attempts. One clean commit when the package works; `git reset --soft HEAD~N` collapses accumulated fixups.
 - **Pre-existing errors are still errors.** A red `tsc`, test, or pack step means the package doesn't pass, even if unrelated to your change. Fix it or flag it; never report green when a check was red.
-- **Don't create unnecessary version files.** Most bumps rename the existing file in `startos/versions/` in place. See `versions.md` (When to Create a New Version File, Release Notes).
+- **Don't create unnecessary version files.** The latest version always lives in `startos/versions/current.ts`; most bumps just edit that file in place. A new file is spun off only when the bump carries a migration. See `versions.md` (When to Create a New Version File, Release Notes).
 
 ## Starting a new package
 

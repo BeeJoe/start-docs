@@ -137,7 +137,7 @@ $ make arm
    Packing 'albyhub_aarch64.s9pk'...
 Build Complete!
 
-  Alby Hub   v1.19.3:1-alpha.0
+  Alby Hub   v1.19.3:1
   Filename:   albyhub_aarch64.s9pk
   Size:       7M
   Arch:       aarch64

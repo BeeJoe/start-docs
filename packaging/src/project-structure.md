@@ -353,11 +353,11 @@ It is possible to limit the execution of custom init functions to specific _kind
 ```
 versions/
 ├── index.ts
-├── v1.0.3.2.ts
-└── v1.0.2.0.ts
+├── current.ts        # The latest version — always this filename
+└── v1.0.2_0.ts       # A historical version kept for its migration
 ```
 
-In the `versions/` directory, you manage package versions and define migration logic. The `index.ts` file uses `VersionGraph.of()` to index the current version and any previous versions of your package. Each version file uses `VersionInfo.of()` to provide the version number, release notes, and any migrations that should run.
+In the `versions/` directory, you manage package versions and define migration logic. The latest version always lives in `current.ts`; historical versions kept for migrations sit beside it under version-named files. The `index.ts` file uses `VersionGraph.of()` to index the current version and any previous versions of your package. Each version file uses `VersionInfo.of()` to provide the version number, release notes, and any migrations that should run.
 
 Migration `up` and `down` functions run once, before anything else, _upon updating or downgrading to that version only_.
 
