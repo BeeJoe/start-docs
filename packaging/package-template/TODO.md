@@ -12,6 +12,8 @@ them, and add items when you defer work.
 
 - [ ] `startos/manifest/index.ts`: fill in `packageRepo`, `upstreamRepo`, and
       `marketingUrl` / `donationUrl` (or remove the latter two). Confirm the `license`.
+- [ ] Replace the placeholder `LICENSE` file with your package's license, matching the
+      `license` field in `startos/manifest/index.ts`.
 - [ ] `startos/manifest/i18n.ts`: write the short and long descriptions, then translate
       them into the other locales.
 - [ ] Replace `icon.svg` with a real {{name}} icon (≤ 40 KiB).
@@ -28,9 +30,9 @@ them, and add items when you defer work.
 - [ ] `startos/main.ts`: define the daemon(s) and any oneshots. Enable the commented-out
       `ready` health check (or add a standalone one), and add its strings to
       `startos/i18n/dictionaries` — only the keys actually referenced should remain there.
-- [ ] Interfaces: the barebones template ships none. If the service exposes a network
-      interface, add `startos/interfaces.ts` (`setupInterfaces`) and wire its `setInterfaces`
-      into `startos/init/index.ts` (see `start-docs/packaging/src/interfaces.md`).
+- [ ] Interfaces: `startos/interfaces.ts` ships wired into `startos/init/index.ts` but
+      returns an empty list. If the service exposes a network interface, bind a port and
+      export the interface there (see `start-docs/packaging/src/interfaces.md`).
 - [ ] `startos/backups.ts`: choose what to back up.
 - [ ] `startos/dependencies.ts`: declare any dependencies (or confirm none).
 - [ ] `startos/actions/`: add user-facing actions / config as needed.
