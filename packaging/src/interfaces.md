@@ -163,6 +163,7 @@ The key steps are:
 | `addSsl.alpn` | `string` \| `null` | ALPN protocol negotiation (e.g., `'h2'`). Usually `null`. |
 | `addSsl.preferredExternalPort` | `number` | External port for SSL connections. |
 | `addSsl.addXForwardedHeaders` | `boolean` | Whether to add `X-Forwarded-*` headers. |
+| `addSsl.auth` | `ProxyAuth` \| `null` | Optional auth gate enforced by the OS reverse proxy. See [Authenticating at the Proxy](#authenticating-at-the-proxy). |
 | `secure` | `{ ssl: boolean }` \| `null` | For non-HTTP protocols, whether the connection is secure. |
 
 ## Interface Options
@@ -215,3 +216,77 @@ return 200 '{"api_url":"https://$host/api"}';
 ```
 
 This applies to any configuration file generated in `setupMain` or any runtime response that includes absolute URLs — not just nginx. When in doubt, hardcode `https://`.
+
+## Authenticating at the Proxy
+
+For protocols that StartOS fronts with its reverse proxy (`http`, `https`, `ws`, `wss`), you can gate an interface with HTTP authentication by setting `addSsl.auth`. The OS reverse proxy validates the `Authorization` header on every incoming request _before_ forwarding it to your container. Requests that fail get `401 Unauthorized` with a `WWW-Authenticate` challenge and never reach your service. You do **not** need to build auth into the service or run a sidecar proxy — the platform enforces it at the edge.
+
+`auth` takes a `ProxyAuth`, which is one of two shapes:
+
+```typescript
+// Basic — one or more username/password pairs; any match passes
+const uiOrigin = await uiMulti.bindPort(uiPort, {
+  protocol: 'http',
+  addSsl: {
+    auth: {
+      type: 'basic',
+      credentials: [{ username: 'admin', password }],
+      realm: null, // advertised in the WWW-Authenticate challenge; defaults to "StartOS"
+    },
+  },
+})
+
+// Bearer — any of the listed tokens is accepted as `Authorization: Bearer <token>`
+const apiOrigin = await apiMulti.bindPort(apiPort, {
+  protocol: 'https',
+  addSsl: {
+    auth: { type: 'bearer', tokens: [apiToken], realm: null },
+  },
+})
+```
+
+| `ProxyAuth` field | Type | Description |
+|--------|------|-------------|
+| `type` | `'basic'` \| `'bearer'` | The auth scheme the proxy enforces. |
+| `credentials` (basic) | `Array<{ username, password }>` | Accepted pairs. Any match passes. The matched `username` is forwarded upstream as `X-Forwarded-User`. |
+| `tokens` (bearer) | `Array<string>` | Accepted bearer tokens. Any match passes. |
+| `realm` | `string` \| `null` | Realm advertised in the 401 `WWW-Authenticate` challenge. Defaults to `"StartOS"`. Use a stable realm across bindings that share credentials so browsers reuse them. |
+
+Setting `auth` implies HTTP-aware proxying, so it is only valid on the SSL-variant protocols above — not on raw TCP (`protocol: null`).
+
+> [!NOTE]
+> The `username` field on `createInterface` is unrelated to this gate — it only embeds a username in the _displayed_ URL (e.g. `https://user@host/`). The enforced credential check is `addSsl.auth`.
+
+### Generating and rotating credentials
+
+Don't hard-code the password. Generate it at install time and let the user rotate it through an action. Store the credential in a [file model](./file-models.md) such as `store.json` and read it reactively in `setupInterfaces` — when the action rewrites the stored value, `setupInterfaces` re-runs and the proxy picks up the new credential automatically:
+
+```typescript
+export const setInterfaces = sdk.setupInterfaces(async ({ effects }) => {
+  const password = await storeJson.read((s) => s.uiPassword).const(effects)
+
+  const uiMulti = sdk.MultiHost.of(effects, 'ui-multi')
+  const uiOrigin = await uiMulti.bindPort(uiPort, {
+    protocol: 'http',
+    addSsl: {
+      auth: { type: 'basic', credentials: [{ username: 'admin', password }], realm: null },
+    },
+  })
+
+  const ui = sdk.createInterface(effects, {
+    name: i18n('Web UI'),
+    id: 'ui',
+    description: i18n('The web interface'),
+    type: 'ui',
+    masked: false,
+    schemeOverride: null,
+    username: null,
+    path: '',
+    query: {},
+  })
+
+  return [await uiOrigin.export([ui])]
+})
+```
+
+Seed `uiPassword` with a generated value during [install init](./init.md) so the gate is active from first start, and pair it with a `reset-password` action that rewrites the stored value and surfaces it to the user once. See [Reset Password](./recipe-reset-password.md).
