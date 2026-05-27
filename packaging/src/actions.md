@@ -233,6 +233,8 @@ The five arguments to `withInput` are: action ID, metadata (static object or asy
 
 Every string that a user will see — action `name`, `description`, `warning`, `reason` on tasks, messages on health checks and action results — must be wrapped in `i18n()`. Raw strings bypass translation and leak English into non-English locales. The existing examples on this page illustrate the pattern: `name: i18n('Configure SMTP')`, not `name: 'Configure SMTP'`.
 
+Thrown errors are the exception. `throw new Error(...)` messages are developer-facing diagnostics that surface in logs and stack traces, not translated UI copy — leave them as plain strings and do **not** wrap them in `i18n()`.
+
 ### Mirror File-Model Keys in InputSpec When Appropriate
 
 When an action's job is "set these fields on this file-model section," name the `InputSpec` keys to match the file-model keys exactly — same casing, same spelling. The prefill and handler collapse to one-liners:

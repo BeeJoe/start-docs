@@ -63,6 +63,9 @@ rocm:
 
 This produces packages named `myservice_generic_x86_64.s9pk` and `myservice_rocm_x86_64.s9pk`.
 
+> [!WARNING]
+> Each variant must declare a **distinct** hardware requirement in the manifest (with at most one empty fallback), or publishing the second variant fails with a registry metadata mismatch. See [GPU/Hardware Acceleration](./manifest.md#hardware-requirements-and-variants).
+
 ### Overriding Defaults
 
 Override variables _before_ `include s9pk.mk`:

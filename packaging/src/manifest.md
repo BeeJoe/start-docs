@@ -203,6 +203,35 @@ images: {
 hardwareAcceleration: true,  // Top-level flag
 ```
 
+#### Hardware requirements and variants
+
+A package that targets several accelerators (NVIDIA, AMD, CPU-only, …) ships one **variant** per accelerator: a separate `.s9pk` built with a different `VARIANT` in the Makefile (see [Makefile](./makefile.md)), all published under a single version. The manifest reads `process.env.VARIANT` to pick per-variant settings, including `hardwareRequirements.device` — a list of device filters telling StartOS which hardware a variant needs:
+
+```typescript
+const variant = process.env.VARIANT || 'cpu'
+
+// inside setupManifest({ ... })
+hardwareRequirements: {
+  device:
+    variant === 'nvidia'
+      ? [{ class: 'display', product: null, vendor: null, driver: 'nvidia', description: 'An NVIDIA GPU' }]
+      : variant === 'rocm'
+        ? [{ class: 'display', product: null, vendor: null, driver: 'amdgpu', description: 'An AMD GPU' }]
+        : [], // cpu: runs anywhere
+},
+```
+
+The registry stores a version's variants together and disambiguates them **by hardware requirement** — on a given machine StartOS offers the variant whose requirement the detected hardware satisfies.
+
+> [!WARNING]
+> Every variant must declare a **distinct** hardware requirement, and **at most one** variant may have an empty requirement (`[]`, the catch-all fallback). Two variants presenting the same requirement — most often two with an empty `device` array — collide when the second is published, and the registry rejects it:
+>
+> ```
+> Invalid Request: package.add: package metadata mismatch: remove the existing version first, then re-add
+> ```
+>
+> In particular an `nvidia` variant must carry an NVIDIA `device` filter, not `[]` — `nvidiaContainer: true` wires up the GPU runtime but does **not** set a hardware requirement, so without the filter the NVIDIA variant is indistinguishable from the CPU fallback and one of the two fails to publish.
+
 ### Virtual Networking (VPN / kernel tun interfaces)
 
 For services that bring up their own kernel tunnel interface — VPNs, WireGuard, or any `tun`-class workload — set `virtualNetworking: true` at the manifest top level:
