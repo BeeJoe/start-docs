@@ -2,11 +2,11 @@
 
 Some services run their own containers — CI runners (`gitea-act-runner`, Forgejo Runner, Drone) execute every job inside a fresh OCI container; build daemons (`buildkitd`) launch sandboxes per build; emulator services pull and run arbitrary images on demand. Without a real container engine inside the service, those workloads can't be sandboxed properly and the service can't isolate untrusted user code.
 
-StartOS supports running a rootless OCI engine — Podman or Docker — inside an opt-in service via `manifest.nestedRuntime: true`. The OS exposes `/dev/fuse` and `/dev/net/tun` so the engine can use `fuse-overlayfs` storage and `slirp4netns`/`pasta` networking. The service's own LXC remains userns-mapped and AppArmor-confined; nothing about the host's posture changes.
+StartOS supports running a rootless OCI engine — Podman or Docker — inside an opt-in service. A nested engine needs two manifest flags: `userspaceFilesystems: true` exposes `/dev/fuse` for `fuse-overlayfs` storage, and `virtualNetworking: true` exposes `/dev/net/tun` for `slirp4netns`/`pasta` networking. The service's own LXC remains userns-mapped and AppArmor-confined; nothing about the host's posture changes.
 
 ## Solution
 
-1. Set `nestedRuntime: true` at the manifest top level.
+1. Set both `userspaceFilesystems: true` and `virtualNetworking: true` at the manifest top level — fuse for storage, tun for rootless networking.
 2. Bake the OCI engine and its rootless prerequisites into the service image.
 3. Add a non-root user and `/etc/subuid` / `/etc/subgid` ranges that fit inside the subcontainer's user namespace.
 4. (Docker only) Drop a tiny `runc` wrapper into the image and point `default-runtime` at it via `daemon.json` — Docker injects a `net.ipv4.ip_unprivileged_port_start` sysctl by default that runc fails to apply across the nested-userns boundary.
@@ -34,16 +34,19 @@ export const manifest = setupManifest({
   },
   alerts: { /* ... */ },
   dependencies: {},
-  nestedRuntime: true,
+  userspaceFilesystems: true,
+  virtualNetworking: true,
 })
 ```
 
 ## What StartOS provides
 
-When `nestedRuntime` is set, the per-service LXC gets:
+With `userspaceFilesystems` and `virtualNetworking` set, the per-service LXC gets:
 
-- `/dev/fuse` — char device 10:229, world-RW. Required by `fuse-overlayfs` for rootless layered storage. Kernel overlayfs-on-overlayfs is denied for unprivileged users, so fuse-overlayfs is the only viable rootless storage driver inside a userns LXC.
-- `/dev/net/tun` — char device 10:200, world-RW. Required by `slirp4netns` and `pasta` for rootless container networking.
+- `/dev/fuse` — char device 10:229, world-RW (via `userspaceFilesystems`). Required by `fuse-overlayfs` for rootless layered storage. Kernel overlayfs-on-overlayfs is denied for unprivileged users, so fuse-overlayfs is the only viable rootless storage driver inside a userns LXC.
+- `/dev/net/tun` — char device 10:200, world-RW (via `virtualNetworking`). Required by `slirp4netns` and `pasta` for rootless container networking.
+
+`virtualNetworking` additionally grants `CAP_NET_ADMIN` (scoped to the container's user namespace). A rootless OCI engine using `slirp4netns`/`pasta` doesn't strictly need it, but the tun device and the capability are bundled under the one flag; the grant is namespaced and harmless here.
 
 Both devices are bind-mounted from the host (via the same machinery that handles `hardwareAcceleration` for GPU nodes). The host's `fuse` and `tun` kernel modules are auto-loaded at boot.
 
@@ -172,4 +175,4 @@ Once dockerd is running (rootful, since `dockerd-rootless.sh` requires the calli
 - **Subordinate-UID range overlap.** `/etc/subuid` / `/etc/subgid` ranges must live inside the subcontainer's userns (UIDs 0..65535) AND must not overlap with the calling user's own UID. With `useradd --uid 1000`, the subordinate range must skip 1000 — `app:1001:64535` works, `app:1:65535` does not.
 - **`fuse-overlayfs` only.** Kernel overlayfs-on-overlayfs is denied for unprivileged users, so don't try `--storage-driver=overlay2`. `fuse-overlayfs` is the only rootless option.
 - **No bridge IPv6 by default.** Rootless networking via slirp4netns is IPv4-only out of the box. If you need IPv6 inside nested containers, configure pasta (`--network=pasta`) instead.
-- **`hardwareAcceleration` is independent.** If a service needs both GPU access and a nested OCI engine (e.g. an LLM-driven CI runner), set both flags.
+- **The capability flags are independent.** `userspaceFilesystems`, `virtualNetworking`, and `hardwareAcceleration` are orthogonal opt-ins. A nested OCI engine needs the first two; an LLM-driven CI runner that also wants GPU access sets all three.
