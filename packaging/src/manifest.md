@@ -203,15 +203,26 @@ images: {
 hardwareAcceleration: true,  // Top-level flag
 ```
 
-### Nested OCI Runtimes (Docker / Podman inside a service)
+### Virtual Networking (VPN / kernel tun interfaces)
 
-For services that need to run their own OCI containers — e.g. CI runners like `gitea-act-runner` that spawn build containers per job — set `nestedRuntime: true` at the manifest top level:
+For services that bring up their own kernel tunnel interface — VPNs, WireGuard, or any `tun`-class workload — set `virtualNetworking: true` at the manifest top level:
 
 ```typescript
-nestedRuntime: true,
+virtualNetworking: true,
 ```
 
-The flag is opt-in. When set, StartOS exposes `/dev/fuse` and `/dev/net/tun` inside the service's container so a rootless engine (Podman or Docker) can use `fuse-overlayfs` for layered storage and `slirp4netns` (or `pasta`) for networking. Service authors are still responsible for installing the OCI engine in the image and configuring it for rootless mode — see [Run a Nested OCI Runtime](./recipe-nested-oci-runtime.md) for the full recipe (subuid setup, daemon configuration, and the runc wrapper required when using Docker).
+When set, StartOS exposes `/dev/net/tun` inside the service's container **and grants `CAP_NET_ADMIN`** (scoped to the container's user namespace) so the service can create and configure tunnel interfaces. This is a meaningful privilege escalation — enable it only when the service genuinely needs a kernel tunnel interface.
+
+### Nested OCI Runtimes (Docker / Podman inside a service)
+
+For services that need to run their own OCI containers — e.g. CI runners like `gitea-act-runner` that spawn build containers per job — set both `userspaceFilesystems` and `virtualNetworking` at the manifest top level:
+
+```typescript
+userspaceFilesystems: true,  // /dev/fuse for fuse-overlayfs storage
+virtualNetworking: true,     // /dev/net/tun for slirp4netns / pasta networking
+```
+
+`userspaceFilesystems` exposes `/dev/fuse` so a rootless engine (Podman or Docker) can use `fuse-overlayfs` for layered storage. `virtualNetworking` exposes `/dev/net/tun` so it can use `slirp4netns` (or `pasta`) for networking (and also grants `CAP_NET_ADMIN`). Both are opt-in. Service authors are still responsible for installing the OCI engine in the image and configuring it for rootless mode — see [Run a Nested OCI Runtime](./recipe-nested-oci-runtime.md) for the full recipe (subuid setup, daemon configuration, and the runc wrapper required when using Docker).
 
 ### Multiple Images
 
