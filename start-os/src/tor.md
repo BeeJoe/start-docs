@@ -12,11 +12,11 @@ Tor is not included in StartOS by default. To use Tor, you must install the **To
 
 ## Creating and Deleting Onion Services
 
-Once Tor is installed, a **Tor** addresses table appears on each service's [interface](interfaces.md) addresses page.
+Once Tor is installed, a **Tor** addresses table appears for each service [interface](interfaces.md), under the **Interfaces** tab.
 
 1. Navigate to the service you want to expose over Tor.
 
-1. Open the interface's addresses page.
+1. Open the **Interfaces** tab and expand the interface.
 
 1. In the Tor table, click **Add Onion Service** to create a `.onion` address for that interface.
 

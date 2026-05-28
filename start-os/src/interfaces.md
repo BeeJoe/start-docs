@@ -1,6 +1,6 @@
 # Interfaces
 
-A service interface is a network endpoint exposed by a service running on your server. Every installed service exposes one or more interfaces, each serving a different purpose. The service interfaces for a given service are listed on its dashboard under the **Service Interfaces** heading.
+A service interface is a network endpoint exposed by a service running on your server. Every installed service exposes one or more interfaces, each serving a different purpose. The service interfaces for a given service are listed under the **Interfaces** tab in the sidebar of its service details page.
 
 ## Interface Types
 
@@ -12,7 +12,7 @@ A service interface is a network endpoint exposed by a service running on your s
 
 ## Viewing Interface Addresses
 
-Clicking a service interface from the dashboard opens its **addresses page**. This page shows all the ways that interface can be reached, organized by [gateway](gateways.md).
+Open the **Interfaces** tab to see every interface the service exposes. Each interface expands to reveal its **addresses** — all the ways that interface can be reached, organized by [gateway](gateways.md). When a service exposes only one interface, it is expanded by default.
 
 ### Gateway Tables
 
@@ -41,7 +41,7 @@ You can add domains to a gateway table by clicking "Add Domain" on the gateway a
 
 ### Tor Onion Addresses
 
-If the [Tor](tor.md) service is installed and running, a **Tor** table also appears on the addresses page. Tor functions like a gateway but is managed as a marketplace service rather than a system gateway.
+If the [Tor](tor.md) service is installed and running, a **Tor** table also appears among the interface's addresses. Tor functions like a gateway but is managed as a marketplace service rather than a system gateway.
 
 The Tor table is empty by default. To add onion addresses:
 
@@ -53,4 +53,4 @@ The Tor table is empty by default. To add onion addresses:
 
 1. Optionally, you can upload a private key to use a [vanity `.onion` address](https://community.torproject.org/onion-services/advanced/vanity-addresses/).
 
-1. To view your onion addresses, go to **Actions > View Onion Addresses**. They will also appear in the Tor table on each service interface's addresses page.
+1. To view your onion addresses, go to **Actions > View Onion Addresses**. They will also appear in the Tor table for each service interface.

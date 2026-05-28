@@ -10,7 +10,7 @@ For hosting websites or APIs that people access in a browser, use a [public doma
 
 ## Enable Public IP Access
 
-1. On the service interface's addresses page, locate the gateway you want to use.
+1. In the **Interfaces** tab, expand the service interface and locate the gateway you want to use.
 
 1. Find its public IPv4 address and toggle it on.
 
