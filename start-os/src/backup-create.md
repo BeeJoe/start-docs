@@ -19,7 +19,7 @@ Back up your server's data to a physical drive or a network folder.
 
 1. Backups can take minutes or hours to complete, depending on your hardware and quantity of data.
 
-1. A service cannot be used while it is backing up. You may, however, continue to use your server and other services.
+1. To back up a service, StartOS first stops it (if it was running), performs the backup, then restarts it — but only if it was running beforehand. A service that was already stopped stays stopped. Consequently a service cannot be used while it is backing up, though you may continue to use your server and other services in the meantime.
 
 1. Upon completion, StartOS issues a backup report, indicating which services were backed up, as well as any errors.
 
