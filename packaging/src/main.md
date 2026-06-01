@@ -248,7 +248,7 @@ Some images bundle their own init system or process supervisor — `s6-overlay` 
 - The image uses `s6-overlay` (any `linuxserver/*` image), `tini`, `dumb-init`, or `supervisord` as its entrypoint
 - The daemon starts but its supervisor immediately crashes complaining it is not PID 1
 
-Leave it off (the default) for images whose entrypoint is the application binary itself. If you suspect this option doesn't exist, grep the installed SDK types — `runAsInit` is declared on the `exec` options in `node_modules/@start9labs/start-sdk/**/Daemons.d.ts`. See [Package a Prebuilt Docker Image](recipe-prebuilt-image.md) for the full prebuilt-image workflow.
+Leave it off (the default) for images whose entrypoint is the application binary itself. (`runAsInit` is declared on the `exec` options in `Daemons.d.ts` — like many SDK options, it's easier to find by grepping the types than by searching the docs; see [Search the SDK before deciding something is impossible](workflow.md#search-the-sdk-before-deciding-something-is-impossible).) See [Package a Prebuilt Docker Image](recipe-prebuilt-image.md) for the full prebuilt-image workflow.
 
 ## Environment Variables
 

@@ -47,7 +47,11 @@ When you don't know a fact, find it; don't invent it and move on. The failure mo
 - **Upstream internals** — config-file formats, credential hashing schemes, file paths. Read them from the app or its docs, or apply them through the app's own CLI/API. Hand-writing a format you assumed (e.g. a bare hash where the app expects salted PBKDF2) fails silently.
 - **Brand assets.** Never ship an invented `icon.svg` or logo. Fetch the real asset from upstream, or leave the placeholder and flag that it still needs the real icon.
 
-When you can't verify something, surface it as an open question or a `TODO.md` item — don't paper over it with confident prose in the README. Relatedly, before concluding the SDK can't do something you need, grep the installed types (`node_modules/@start9labs/start-sdk/**/*.d.ts`); the option often exists.
+When you can't verify something, surface it as an open question or a `TODO.md` item — don't paper over it with confident prose in the README.
+
+## Search the SDK before deciding something is impossible
+
+Before concluding the SDK can't do what you need — or working around a limitation you've assumed — grep the installed type definitions: `node_modules/@start9labs/start-sdk/**/*.d.ts`. The SDK exposes far more than the recipes show, and the option you want is often a field on a type you're already using (this is how `runAsInit` is found, for example). "The SDK doesn't support X" is a claim to verify in the types, not a conclusion to reach from the docs alone. If it genuinely isn't there, say so and explain the workaround — don't silently route around a capability that exists.
 
 ## Don't create unnecessary version files
 
