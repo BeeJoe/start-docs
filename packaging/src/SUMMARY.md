@@ -17,6 +17,7 @@
 ## Configuration
 
 - [Set Up a Basic Service](recipe-basic-service.md)
+- [Package a Prebuilt Docker Image](recipe-prebuilt-image.md)
 - [Create Configuration Actions](recipe-config-actions.md)
 - [Generate Config Files](recipe-config-files.md)
 - [Pass Config via Environment Variables](recipe-env-vars.md)

@@ -6,6 +6,8 @@ A minimal StartOS service: one container, one web UI, one health check, one back
 
 Define a daemon in `setupMain()` with one subcontainer, mount a volume, and add a `checkPortListening` health check. Define a single HTTP interface in `setupInterfaces()` using `MultiHost.of()` and `createInterface()`. Define backups with `sdk.Backups.ofVolumes()` to back up the data volume.
 
+> **Wrapping an upstream Docker image** (a `linuxserver/*` or official `org/app` image) rather than building your own? Start here for the shape, then read [Package a Prebuilt Docker Image](recipe-prebuilt-image.md) for the image-specific concerns — verifying the image, mounting every data path, init systems, and credentials.
+
 **Reference:** [Main](main.md) · [Interfaces](interfaces.md)
 
 ## Examples
