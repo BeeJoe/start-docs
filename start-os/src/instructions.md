@@ -1,6 +1,6 @@
 # Instructions
 
-Every service installed on StartOS ships with an **Instructions** page, accessible from a tab on the service details page sidebar (just below Dashboard). Instructions are written by the package's developer for you, the person actually running the service — they explain what the service is, walk you through getting it set up on StartOS, and tell you how to use it once it's running.
+Every service installed on StartOS ships with an **Instructions** page, accessible from the **Instructions** tab in the service details page sidebar. Instructions are written by the package's developer for you, the person actually running the service — they explain what the service is, walk you through getting it set up on StartOS, and tell you how to use it once it's running.
 
 ## When to Read Them
 
