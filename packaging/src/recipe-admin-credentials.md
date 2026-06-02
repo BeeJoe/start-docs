@@ -14,6 +14,9 @@ The shape gives you:
 
 When the upstream service requires the password to be applied via CLI or API (rather than read from the store at startup), wrap the work in `sdk.SubContainer.withTemp()` inside the action handler and run the upstream command before returning — see the [Reset a Password](recipe-reset-password.md) recipe for the temp-subcontainer shape.
 
+> [!WARNING]
+> Do not hand-write a credential into the app's config file in a format you have not confirmed. Many apps store web passwords as **salted PBKDF2 or bcrypt** values with app-specific framing, not as a bare hash you can compute and drop into a config key — and writing the wrong format does not error, it silently rejects every login. Prefer applying the password through the app's **own** CLI/API (the temp-subcontainer shape above). If you must write the config directly, first confirm the exact on-disk format by setting a password through the app once and reading back what it wrote. Either way, **verify a real login succeeds before shipping** — a credential flow that has never been logged into is not done.
+
 **Reference:** [Initialization](init.md) · [Tasks](tasks.md) · [Actions](actions.md)
 
 ## Examples

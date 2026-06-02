@@ -29,6 +29,30 @@ See [Writing READMEs](./writing-readmes.md) and [Writing Instructions](./writing
 
 If `tsc`, a test, or the pack step fails — even on something unrelated to your change — the package does not pass. "Pre-existing" is not a pass condition; it is a signal that nobody has fixed the problem yet. Either fix it, or stop and flag it explicitly. Never report a run as green when any check was red.
 
+## Verify against reality, not against `tsc`
+
+A clean `tsc` and a successful `start-cli s9pk pack` prove the code type-checks and the package builds. They prove **nothing** about whether the service runs, the web UI loads, logins work, or data persists. Type-checking a credential flow that has never accepted a login, or a daemon that mounts the wrong path, passes just as green as one that works.
+
+Before reporting a feature as done, exercise it against a running service:
+
+- **Install on a StartOS box** (or run the image directly) and confirm the daemon stays up — not just that it starts.
+- **Use the actual feature.** If you wired up admin credentials, log in with them. If you mounted a data volume, write data and restart to confirm it survives. If you exposed a port, connect to it.
+- **A feature you have only compiled is unverified.** Say so plainly — "builds clean; not yet installed/tested" — rather than implying it works.
+
+## Don't fabricate — verify or flag
+
+When you don't know a fact, find it; don't invent it and move on. The failure mode to avoid is stating a guess with the confidence of a checked fact. Three places this bites hardest:
+
+- **Image names and tags.** Confirm the repository and tag exist in the registry before pinning `dockerTag` — don't guess `org/name` from memory. (See [Package a Prebuilt Docker Image](recipe-prebuilt-image.md).)
+- **Upstream internals** — config-file formats, credential hashing schemes, file paths. Read them from the app or its docs, or apply them through the app's own CLI/API. Hand-writing a format you assumed (e.g. a bare hash where the app expects salted PBKDF2) fails silently.
+- **Brand assets.** Never ship an invented `icon.svg` or logo. Fetch the real asset from upstream, or leave the placeholder and flag that it still needs the real icon.
+
+When you can't verify something, surface it as an open question or a `TODO.md` item — don't paper over it with confident prose in the README.
+
+## Search the SDK before deciding something is impossible
+
+Before concluding the SDK can't do what you need — or working around a limitation you've assumed — grep the installed type definitions: `node_modules/@start9labs/start-sdk/**/*.d.ts`. The SDK exposes far more than the recipes show, and the option you want is often a field on a type you're already using (this is how `runAsInit` is found, for example). "The SDK doesn't support X" is a claim to verify in the types, not a conclusion to reach from the docs alone. If it genuinely isn't there, say so and explain the workaround — don't silently route around a capability that exists.
+
 ## Don't create unnecessary version files
 
 Most version bumps edit `startos/versions/current.ts` in place — change the `version` and `releaseNotes`, leave `index.ts` and the filename alone. A new file is only spun off when the bump carries a migration. See [Versions — When to Create a New Version File](./versions.md#when-to-create-a-new-version-file) for the rule, and [Release Notes](./versions.md#release-notes) for how to write the notes that accompany a bump.

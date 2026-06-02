@@ -227,6 +227,29 @@ Use a custom command array when you need to bypass the entrypoint entirely:
 })
 ```
 
+### Running the Entrypoint as PID 1 (`runAsInit`)
+
+Some images bundle their own init system or process supervisor — `s6-overlay` (used by **every** `linuxserver/*` image), `tini`, `dumb-init`, or `supervisord` — and that supervisor expects to run as **PID 1**. In a StartOS subcontainer the daemon command is not PID 1 by default, so such a supervisor aborts on startup (s6 logs `s6-overlay-suexec: fatal: can only run as pid 1`). Set `runAsInit: true` on the `exec` to make the command the container's init process:
+
+```typescript
+.addDaemon('primary', {
+  subcontainer: appSub,
+  exec: {
+    command: sdk.useEntrypoint(),
+    runAsInit: true, // image bundles s6-overlay / tini / supervisord, which must be PID 1
+    env: { PUID: '1000', PGID: '1000', TZ: 'Etc/UTC' },
+  },
+  // ...
+})
+```
+
+**When to use `runAsInit: true`:**
+
+- The image uses `s6-overlay` (any `linuxserver/*` image), `tini`, `dumb-init`, or `supervisord` as its entrypoint
+- The daemon starts but its supervisor immediately crashes complaining it is not PID 1
+
+Leave it off (the default) for images whose entrypoint is the application binary itself. (`runAsInit` is declared on the `exec` options in `Daemons.d.ts` — like many SDK options, it's easier to find by grepping the types than by searching the docs; see [Search the SDK before deciding something is impossible](workflow.md#search-the-sdk-before-deciding-something-is-impossible).) See [Package a Prebuilt Docker Image](recipe-prebuilt-image.md) for the full prebuilt-image workflow.
+
 ## Environment Variables
 
 Pass environment variables to a daemon or oneshot via the `env` option on `exec`:

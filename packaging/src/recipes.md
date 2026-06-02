@@ -4,11 +4,14 @@ This is the primary entry point for StartOS service packaging — for both you a
 
 If you're using [Claude Code](https://claude.com/claude-code) (recommended), point your agent at the recipe for your task and let it follow the reference and package links from there.
 
+> **Starting a brand-new package?** Scaffold it first with `start-cli s9pk init-package "My Service"`, then work the generated `TODO.md` from top to bottom — don't hand-assemble files by copying another package. If you're wrapping an existing upstream Docker image (the common case), read [Package a Prebuilt Docker Image](recipe-prebuilt-image.md) before you start.
+
 ## Configuration
 
 | Recipe | Description |
 |--------|-------------|
 | [Set Up a Basic Service](recipe-basic-service.md) | Minimal single-container service with a web UI, health check, and backup |
+| [Package a Prebuilt Docker Image](recipe-prebuilt-image.md) | Wrap an upstream `linuxserver/*` or official image — verify the image, mount every data path, expose all ports, handle init systems and credentials |
 | [Create Configuration Actions](recipe-config-actions.md) | Let users configure your service through actions with input forms |
 | [Generate Config Files](recipe-config-files.md) | Produce YAML, TOML, INI, JSON, or ENV files from user settings using FileModel |
 | [Pass Config via Environment Variables](recipe-env-vars.md) | Configure your service through environment variables in the daemon definition |
