@@ -4,7 +4,7 @@ This page covers how to *behave* while working on a package — the disciplines 
 
 ## Keep README and instructions in sync
 
-`README.md` and `instructions.md` are part of the package, not afterthoughts. Any change that affects user-visible behavior — a new or renamed action, an added or removed volume/port/interface/dependency, a changed default, a new feature or limitation — must update both files in the same change.
+`README.md` and `instructions.md` are part of the package, not afterthoughts, and they track different things. `README.md` is the architectural reference for developers and AI — update it for any change to how the package is built, structured, or behaves (a new or renamed action, an added or removed volume/port/interface/dependency, a changed default, a new feature or limitation). `instructions.md` is the end-user guide — update it whenever a change affects what the user sees or does. When a change touches both, update both in the same change.
 
 Apply this loop on every task:
 
@@ -13,7 +13,7 @@ Apply this loop on every task:
 3. If either no longer matches the code, update it in the same change.
 4. If a file is silent on the area and doesn't need to speak to it, leave it.
 
-Don't skip step 2 on the theory that a change was "internal." If you're unsure whether a change was user-visible, the doc check *is* the answer: if neither file mentions the area, it was internal; if one does, your change probably affects that file.
+Don't skip step 2 on the theory that a change was "internal." If you're unsure whether a change is worth documenting, the doc check *is* the answer: if neither file mentions the area, it was internal; if one does, your change probably affects that file.
 
 See [Writing READMEs](./writing-readmes.md) and [Writing Instructions](./writing-instructions.md) for the content rules.
 
