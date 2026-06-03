@@ -82,6 +82,8 @@ start-cli --version
 > [!TIP]
 > If any command is not found, revisit the installation steps for that tool and ensure it is on your system PATH.
 
+<!-- sdk-2.0: Hidden until start-cli ships `init-workspace` / `init-package` (SDK 2.0). These commands don't exist in the released CLI yet — restore this entire section, and the references marked `sdk-2.0:` in quick-start.md and README.md, when 2.0 publishes.
+
 ## Set Up Your Packaging Workspace
 
 StartOS packaging is designed to be done with an AI coding agent. `start-cli` scaffolds an AI-ready **packaging workspace** in one command — a directory that holds the packaging guide and an agent-context file, so any assistant you open there already knows how to build a StartOS package. If you use [Claude Code](https://docs.anthropic.com/en/docs/claude-code), Start9 recommends the Opus 4.7 or later model.
@@ -167,3 +169,6 @@ git -C start-docs pull --ff-only
 ```
 
 There's no separate update command — re-running `init-workspace` on an existing workspace just fills in anything missing, and your `AGENTS.local.md` is never touched.
+
+-->
+

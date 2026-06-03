@@ -7,45 +7,22 @@ This guide walks you through creating your own service package repository from t
 
 ## Create Your Repository
 
-{{#tabs global="git-method"}}
+Create your own repository from the [Hello World template](https://github.com/Start9Labs/hello-world-startos), named with the `<service-name>-startos` convention (e.g., `nextcloud-startos`).
 
-{{#tab name="GitHub Template"}}
+On GitHub, click **"Use this template → Create new repository"**, then clone it:
 
-1. Navigate to the [Hello World Template](https://github.com/Start9Labs/hello-world-startos) on GitHub.
+```sh
+git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
+cd YOUR-REPO
+```
 
-1. In the top right, click **"Use this template > Create new repository"**.
-
-1. Name your repository using the convention `<service-name>-startos` (e.g., `nextcloud-startos`).
-
-1. Click **"Create Repository"**.
-
-1. Clone your new repository:
-
-   ```sh
-   git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git
-   cd YOUR-REPO
-   ```
-
-{{#endtab}}
-
-{{#tab name="Manual Setup"}}
-
-Clone the template, then re-initialize it as your own repository:
+Not using GitHub? Clone the template directly and re-initialize it as your own repository — then push it anywhere:
 
 ```sh
 git clone --depth 1 https://github.com/Start9Labs/hello-world-startos.git my-service-startos
 cd my-service-startos
-rm -rf .git
-git init
-git add .
-git commit -m "Initial commit from hello-world template"
+rm -rf .git && git init && git add . && git commit -m "Initial commit from hello-world template"
 ```
-
-You can then push to any git hosting provider of your choice.
-
-{{#endtab}}
-
-{{#endtabs}}
 
 ## Build the Package
 
@@ -72,4 +49,7 @@ See [Installation](./makefile.md#installation).
 
 With Hello World running on your server, you're ready to package your own service. Browse the [Recipes](./recipes.md) to find the patterns your service needs — each recipe describes the approach and points you to reference docs and real package code.
 
+<!-- sdk-2.0: restore when start-cli ships init-workspace (workspace section hidden in environment-setup.md)
 If you set up a [packaging workspace](./environment-setup.md#set-up-your-packaging-workspace) during environment setup, point your agent at the recipe for your first task and let it work from there.
+-->
+
