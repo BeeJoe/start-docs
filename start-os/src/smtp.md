@@ -17,21 +17,25 @@ The guides below are for using Gmail, Amazon SES, or Proton Mail for SMTP, but y
 
 1. Enable 2-Step verification if not already.
 
-1. Under "App Passwords" (bottom), add a new App Password.
+1. Go to the App Passwords page: https://myaccount.google.com/apppasswords. Google no longer links to it from the 2-Step Verification page, so navigate there directly.
 
 1. Choose a name for the new App Password. You may call it anything, such as "SMTP", then click "Create".
 
 1. A random 16-character password will be created and shown to you. This is your app password. Save it somewhere secure, such as your Vaultwarden password manager, then click "Done".
 
-1. Now you can use this SMTP account for any service that has the capability to send an email. The table below shows all the details you may need:
+1. In StartOS, go to **System > SMTP**, select **Gmail** as the provider, and enter the values below. Choosing Gmail pre-fills the host and defaults to TLS on port 465.
 
-   | Parameter  | Value                          |
-   | ---------- | ------------------------------ |
-   | Host       | smtp.gmail.com                 |
-   | Port       | 587                            |
-   | Encryption | TLS                            |
-   | Username   | your-username@gmail.com        |
-   | Password   | your App Password (from above) |
+   | Parameter           | Value                          |
+   | ------------------- | ------------------------------ |
+   | Host                | smtp.gmail.com                 |
+   | Connection Security | TLS                            |
+   | Port                | 465                            |
+   | From Address        | your-username@gmail.com        |
+   | Username            | your-username@gmail.com        |
+   | Password            | your App Password (from above) |
+
+   > [!NOTE]
+   > Selecting Gmail pre-fills and locks the **Host**, and choosing **TLS** locks the **Port** at 465. To use STARTTLS instead, set **Connection Security** to **STARTTLS** and the **Port** becomes **587**. The **From Address** may optionally include a display name, e.g. `Your Name <your-username@gmail.com>`.
 
 {{#endtab}}
 
