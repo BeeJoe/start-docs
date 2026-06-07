@@ -165,7 +165,7 @@ When making changes to the StartOS wrapper without upstream changes:
 
 ## Release Notes
 
-`releaseNotes` renders as markdown in the StartOS UI. **Say something useful about the release — never just name the version bump.** A bare `Bumps Ghost → 6.38.0.` tells the user nothing about what actually changed. Read the upstream release notes / changelog for the bumped range, pull out the highlights that matter to a user (notable features, important fixes, security patches, breaking changes / required actions), and summarize them. Then link to the complete upstream release notes or changelog so the user can read the full detail. If the upstream release is genuinely trivial (e.g. a dependency-only patch), say that explicitly rather than padding — but still say *something*.
+`releaseNotes` renders as markdown in the StartOS UI. **Describe what changed in the release.** Read the upstream release notes / changelog for the bumped range, pull out the highlights that matter to a user (notable features, important fixes, security patches, breaking changes / required actions), and summarize them. Then link to the complete upstream release notes or changelog so the user can read the full detail. If the upstream release is genuinely trivial (e.g. a dependency-only patch), say that explicitly.
 
 **Match the length to the content.** A small release is a sentence or two; a larger one earns bullets, and bold section headers (`**Features**`, `**Fixes**`, `**Internal**`) once it spans more than one category. Localize prose and headers in every locale; don't leave them in English.
 
