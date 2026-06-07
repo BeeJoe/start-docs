@@ -165,33 +165,47 @@ When making changes to the StartOS wrapper without upstream changes:
 
 ## Release Notes
 
-`releaseNotes` renders as markdown in the StartOS UI. **Match the length to the content — if it fits on one line, write one line.** A single-change release doesn't need bullets, headers, or a backtick template literal. Reach for bullets when there are several items in one category; add bold section headers (`**Bumps**`, `**Features**`, `**Fixes**`, `**Internal**`) only when the release spans more than one category. Localize the headers in every locale; don't leave them in English.
+`releaseNotes` renders as markdown in the StartOS UI. **Describe what changed in the release.** Read the upstream release notes / changelog for the bumped range, pull out the highlights that matter to a user (notable features, important fixes, security patches, breaking changes / required actions), and summarize them. Then link to the complete upstream release notes or changelog so the user can read the full detail. If the upstream release is genuinely trivial (e.g. a dependency-only patch), say that explicitly.
+
+**Match the length to the content.** A small release is a sentence or two; a larger one earns bullets, and bold section headers (`**Features**`, `**Fixes**`, `**Internal**`) once it spans more than one category. Localize prose and headers in every locale; don't leave them in English.
 
 ```ts
-// One change: plain string.
-releaseNotes: { en_US: 'Bumps Ghost → 6.38.0.', /* …other locales */ },
-
-// Several items, one category: bullets, no header.
+// Small release: a sentence naming the bump + the key change, then the link.
 releaseNotes: {
-  en_US: `- Ghost → 6.38.0
-- MySQL → 8.4.9`,
+  en_US: `Updated Ghost to 6.38.0. Fixes a crash when restoring from backup and patches a moderate XSS vulnerability in the editor. Full notes: https://github.com/TryGhost/Ghost/releases/tag/v6.38.0`,
+  // …other locales
+},
+
+// Larger release: highlights as bullets, then the link.
+releaseNotes: {
+  en_US: `Updated Ghost to 6.38.0.
+
+- New: scheduled newsletter sends
+- Fix: crash on backup restore
+- Security: patched editor XSS
+
+[Full release notes](https://github.com/TryGhost/Ghost/releases/tag/v6.38.0)`,
   // …
 },
 
-// Multiple categories: headers + bullets.
+// Multiple categories spanning the wrapper and upstream: headers + bullets.
 releaseNotes: {
-  en_US: `**Bumps**
+  en_US: `Updated Ghost to 6.38.0 and bumped the start-sdk.
 
-- Ghost → 6.38.0
+**Features**
+
+- New: scheduled newsletter sends
 
 **Fixes**
 
-- Crash on backup restart.`,
+- Crash on backup restart
+
+[Full upstream release notes](https://github.com/TryGhost/Ghost/releases/tag/v6.38.0)`,
   // …
 },
 ```
 
-Use a template literal (backticks) only when the note actually spans multiple lines, and never indent its content lines.
+Use a template literal (backticks) only when the note actually spans multiple lines, and never indent its content lines. If you genuinely can't find upstream notes, link to the upstream commit/tag comparison instead.
 
 ## Migrations
 
