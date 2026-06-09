@@ -4,6 +4,10 @@ Access your server privately from anywhere in the world using a VPN. Only author
 
 Think of your server's [gateway](gateways.md) as a defense perimeter with hundreds of locked doors, each door leading to a unique service interface. One door might say "Vaultwarden UI", another "Bitcoin RPC", and another "Bitcoin P2P". An inbound VPN gives authorized devices a key to the doors they need — without opening them to the public Internet.
 
+## WATCH THE VIDEO
+
+<div class="yt-video" data-id="mYsx7iTZgl4" data-title="Inbound VPN"></div>
+
 ## LAN IP and Private Domains over VPN
 
 Once connected to your VPN, you can reach your server and its services using your server's LAN IP address. The StartOS dashboard is available at the base IP, while each service interface is available on a different port of that same IP.
