@@ -2,6 +2,10 @@
 
 Make your services publicly reachable on the Internet using standard domains (`.com`, `.net`, etc.). This requires [gateway](gateways.md) selection, a domain name, DNS configuration, and port forwarding.
 
+## WATCH THE VIDEO
+
+<div class="yt-video" data-id="g3IKJ-6ysxA" data-title="Clearnet"></div>
+
 > [!WARNING]
 > If your ISP uses [CGNAT](cgnat.md), your router cannot accept inbound connections and port forwarding will not work. You **must** use a [StartTunnel](/start-tunnel/) gateway for clearnet hosting.
 

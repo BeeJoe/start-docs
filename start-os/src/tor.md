@@ -2,6 +2,10 @@
 
 Access your server over the Tor network using `.onion` addresses. Tor provides anonymous, censorship-resistant connections. How you use an onion address determines whether it functions as private or public access: keep the address secret and it's a private tunnel; publish it without associating your identity and you host anonymously; publish it with your identity and you host an identified but censorship-resistant service.
 
+## WATCH THE VIDEO
+
+<div class="yt-video" data-id="hQdexuNvshk" data-title="TOR"></div>
+
 ## Setting Up Tor
 
 Tor is not included in StartOS by default. To use Tor, you must install the **Tor** service from the marketplace.
